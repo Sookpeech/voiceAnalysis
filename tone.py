@@ -2,8 +2,9 @@
 # !pip install pydub
 
 import parselmouth
-from pydub import AudioSegment
 from parselmouth.praat import call
+
+import pause_detection as pd
 
 # measure pitch
 def measurePitch(voiceID, f0min, f0max, unit):
@@ -17,9 +18,13 @@ def measurePitch(voiceID, f0min, f0max, unit):
 
     return localJitter, localShimmer, rapJitter, apq3Shimmer, apq11Shimmer
 
-# m4a to wav
-wav_file_path = ".\\news1.wav" # wav file path
+# measure pitch from wav file
+file_title = "news1"
+wav_file_path = ".\\audio_files\\"+file_title+".wav" # wav file path
 
 sound = parselmouth.Sound(wav_file_path)
 (localJitter, localShimmer, rapJitter, apq3Shimmer, apq11Shimmer) = measurePitch(sound, 155, 334, "Hertz")
 print(f"localJitter: {localJitter*100}\nlocalShimmer: {localShimmer*100}\nrapJitter: {rapJitter*100}\napq3Shimmer: {apq3Shimmer*100}\napq11Shimmer: {apq11Shimmer*100}")
+
+# split wav file using pause_detection
+pd.splitByPause(wav_file_path, file_title)

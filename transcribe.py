@@ -55,11 +55,13 @@ def transcribe_wav_file(wav_file_title, wav_file_path):
 
     print(result_text)
 
-    # delete transcribe job
-    # when you start to run transcribe on the same job-name, it will evoke Badrequest error
-    delete_transcribe = boto3.client('transcribe', config=my_config)
-    res = delete_transcribe.delete_transcription_job(
-        TranscriptionJobName = wav_file_title
-    ) 
 
-    res['ResponseMetadata']['HTTPStatusCode']=='200'
+# def deleteTranscribeJob():
+#     # delete transcribe job
+#     # when you start to run transcribe on the same job-name, it will evoke Badrequest error
+#     delete_transcribe = boto3.client('transcribe', config=my_config)
+#     res = delete_transcribe.delete_transcription_job(
+#         TranscriptionJobName = wav_file_title
+#     ) 
+
+#     res['ResponseMetadata']['HTTPStatusCode']=='200'

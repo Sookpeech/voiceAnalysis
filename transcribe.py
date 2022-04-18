@@ -15,7 +15,7 @@ def upload_to_s3(wav_file_title, wav_file_path, count):
         except:
             print("failed to upload wav_file_{} to s3", i)
 
-def transcribe_wav_file(wav_file_title, wav_file_path):
+def transcribe_wav_file(wav_file_title, count):
     # Config for transcribe
     my_config = Config(
         region_name = 'ap-northeast-2',
@@ -28,9 +28,10 @@ def transcribe_wav_file(wav_file_title, wav_file_path):
 
     # run transcribe
     transcribe = boto3.client('transcribe', config=my_config)
-    job_uri = 'https://s3.ap-northeast-2.amazonaws.com/{}/{}.wav'.format(bucket_name, wav_file_title)
+    job_uri = 'https://s3.ap-northeast-2.amazonaws.com/{}/{}/{}_{}.wav'.format(bucket_name,wav_file_title, wav_file_title, count)
+    job_name = '{}_{}'.format(wav_file_title, count)
     transcribe.start_transcription_job(
-        TranscriptionJobName = wav_file_title,
+        TranscriptionJobName = job_name,
         Media={'MediaFileUri': job_uri},
         MediaFormat='wav',
         LanguageCode = 'ko-KR',
@@ -41,7 +42,7 @@ def transcribe_wav_file(wav_file_title, wav_file_path):
 
     # check transcription compeleted or failed
     while True:
-        status = transcribe.get_transcription_job(TranscriptionJobName = wav_file_title)
+        status = transcribe.get_transcription_job(TranscriptionJobName = job_name)
         if status['TranscriptionJob']['TranscriptionJobStatus'] in ['COMPLETED', 'FAILED']:
             save_json_uri = status['TranscriptionJob']['Transcript']['TranscriptFileUri']
             break
@@ -53,7 +54,9 @@ def transcribe_wav_file(wav_file_title, wav_file_path):
     result = load.read().decode('utf-8')
     result_text = literal_eval(result)['results']['transcripts'][0]['transcript']
 
-    print(result_text)
+    print('transcribe count_{}: {}'.format(count, result_text))
+
+    return result_text
 
 
 # def deleteTranscribeJob():

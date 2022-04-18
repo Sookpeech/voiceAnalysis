@@ -1,3 +1,4 @@
+from calendar import c
 import pause_detection as pd
 import transcribe as ts
 import tone_analysis as tone
@@ -12,8 +13,13 @@ print(f"localJitter: {localJitter*100}\nlocalShimmer: {localShimmer*100}\nrapJit
 # split wav file using pause_detection
 chunk_count = pd.splitByPause(wav_file_path+wav_file_title+".wav", wav_file_title) + 1
 
-# upload wav files to s3
+# upload all splited wav files to s3
 ts.upload_to_s3(wav_file_title, wav_file_path, chunk_count)
 
-# test transcribe
-# ts.transcribe_wav_file(wav_file_title, wav_file_path)
+# transcribe all splited wav files
+transcripts = []
+for i in range(chunk_count):
+    transcript = ts.transcribe_wav_file(wav_file_title, i)
+    transcripts.append(transcript)
+
+print(transcripts)

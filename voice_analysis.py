@@ -2,6 +2,7 @@ from calendar import c
 import pause_detection as pd
 import transcribe as ts
 import tone_analysis as tone
+import chars_analysis as ca
 
 # measure pitch from wav file
 wav_file_title = "news1"
@@ -22,4 +23,6 @@ for i in range(chunk_count):
     transcript = ts.transcribe_wav_file(wav_file_title, i)
     transcripts.append(transcript)
 
-print(transcripts)
+# count total number of characters
+total_chars_count = ca.countCharacters(transcripts)
+print('total_chars_count: {}'.format(total_chars_count))

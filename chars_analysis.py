@@ -6,19 +6,21 @@ import urllib3
 import json
 
 
-def countCharacters(transcripts):
+def countCharacters(transcript):
+    # TODO: 안내 문구
     count = 0
-    for x in transcripts:
-        for i in range(len(x)):
-            if ord('가')<=ord(x[i])<=ord('힣'):
-                count+=1
+    for i in range(len(transcript)):
+        if ord('가')<=ord(x[i])<=ord('힣'):
+            count+=1
     return count
 
-def checkClosingRemarks():
+def checkClosingRemarks(transcript):
+    # TODO: 안내 문구
     openApiURL = "http://aiopen.etri.re.kr:8000/WiseNLU_spoken"
     accessKey = ACCESS_KEY
     analysisCode = "morp"
-    text = "안녕하세요, 저는 조은비이며 굉장히 지쳐있습니다."
+    text = transcript
+    count = 0
 
     requestJson = {
         "access_key": accessKey,
@@ -36,14 +38,15 @@ def checkClosingRemarks():
         body = json.dumps(requestJson)
     )
 
+    # check closing remarks are appropriate
     return_objects = json.loads(response.data)['return_object']
     sentences = return_objects["sentence"]
     morps = sentences[0]["morp"]
     for morp in morps:
-        if morp["type"]=="EF":
-            print(morp)
-        elif morp["type"]=="EC" and morp["lemma"][-1]=="요":
-            print(morp)
+        if morp["type"]=="EF" or (morp["type"]=="EC" and morp["lemma"][-1]=="요"):
+            if morp["position"] >= len(text.encode())-10: #TODO: 맺음말 위치 확인
+                count+=1
 
+    return count
     
 

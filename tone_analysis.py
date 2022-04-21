@@ -15,4 +15,8 @@ def measurePitch(f0min, f0max, unit, wav_file_title, wav_file_path):
     apq3Shimmer = call([sound, pointProcess], "Get shimmer (apq3)", 0, 0, 0.0001, 0.02, 1.3, 1.6)
     apq11Shimmer =  call([sound, pointProcess], "Get shimmer (apq11)", 0, 0, 0.0001, 0.02, 1.3, 1.6)
 
-    return localJitter, localShimmer, rapJitter, apq3Shimmer, apq11Shimmer
+    printPitchResult(localJitter, localShimmer, rapJitter, apq3Shimmer, apq11Shimmer)
+
+def printPitchResult(localJitter, localShimmer, rapJitter, apq3Shimmer, apq11Shimmer):
+    # TODO: 안내 문구 출력
+    print(f"localJitter: {localJitter*100}\nlocalShimmer: {localShimmer*100}\nrapJitter: {rapJitter*100}\napq3Shimmer: {apq3Shimmer*100}\napq11Shimmer: {apq11Shimmer*100}")

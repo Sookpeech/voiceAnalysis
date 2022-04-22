@@ -8,7 +8,7 @@ def splitByPause(wav_file_path, wav_file_title):
 
     # save splited files
     for i, chunk in enumerate(chunks):
-        output_audio = ".\\audio_files\\"+wav_file_title+"_{0}.wav".format(i)
-        print("Export complete: ", output_audio)
+        output_audio = wav_file_path+wav_file_title+"_{0}.wav".format(i)
+        # print("Export complete: ", output_audio)
         chunk.export(output_audio, format="wav")
     return i

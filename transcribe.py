@@ -6,7 +6,7 @@ from botocore.config import Config
 
 bucket_name = "sookpeech-wavfile"
 
-def upload_to_s3(wav_file_title, wav_file_path, count):
+def uploadTos3(wav_file_title, wav_file_path, count):
     s3 = boto3.resource('s3')
     for i in range(count):
         audio = open('{}{}_{}.wav'.format(wav_file_path, wav_file_title, i), 'rb')
@@ -15,7 +15,7 @@ def upload_to_s3(wav_file_title, wav_file_path, count):
         except:
             print("failed to upload wav_file_{} to s3", i)
 
-def transcribe_wav_file(wav_file_title, count):
+def transcribeWavFile(wav_file_title, count):
     # Config for transcribe
     my_config = Config(
         region_name = 'ap-northeast-2',

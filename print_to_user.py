@@ -12,6 +12,6 @@ def printWPM(count, duration):
     elif WPM<=124:
         print(text.format("빠른 편", WPM))
 
-def printClosingRemarks(count):
-    # TODO
-    return 
+def printClosingRemarks(count, total_count):
+    text = "김눈송님이 발화하신 {}문장 중 {:.1f}%의 맺음말이 정확히 인식되었습니다."
+    print(text.format(total_count, (count/total_count)*100))

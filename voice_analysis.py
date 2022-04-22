@@ -35,3 +35,4 @@ for transcript in transcripts:
 
 # print notice for user  
 pr.printWPM(words_count, wav_file_duration)
+pr.printClosingRemarks(closing_remark_count, chunk_count)

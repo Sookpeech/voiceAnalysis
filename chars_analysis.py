@@ -4,14 +4,6 @@ from urllib import response
 from imports import ACCESS_KEY
 import urllib3
 import json
-import wave
-
-def getDurationSec(path):
-    audio = wave.open(path)
-    frames = audio.getnframes()
-    rate = audio.getframerate()
-    duration = frames/float(rate)
-    return duration
 
 def countNumOfWords(transcript):
     count = 0

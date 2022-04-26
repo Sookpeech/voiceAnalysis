@@ -23,7 +23,7 @@ wav_file_duration = getDurationSec(wav_file_path+wav_file_title+".wav")
 localShimmer, rapJitter = tone.measurePitch(155, 334, "Hertz", wav_file_title, wav_file_path)
 
 # split wav file using pause_detection
-chunk_count = pd.splitByPause(wav_file_path+wav_file_title+".wav", wav_file_title) + 1
+chunk_count = pd.splitByPause(wav_file_path, wav_file_title) + 1
 
 # upload all splited wav files to s3
 saved_file_count = ts.uploadTos3(wav_file_title, wav_file_path, chunk_count)
@@ -42,12 +42,11 @@ for transcript in transcripts:
     closing_remark_count += ca.checkClosingRemarks(transcript)
 
 # print notice for user  
-print("==========================================RESULT=============================================")
-print("==============================[1] 말하기 속도=====================================")
+print("[1] 말하기 속도")
 pr.printWPM(words_count, wav_file_duration)
-print("==============================[2] 맺음말 =========================================")
+print("[2] 맺음말")
 pr.printClosingRemarks(closing_remark_count, chunk_count)
-print("==============================[3] 목소리 강조 ====================================")
+print("[3] 목소리 강조")
 pr.printTone(localShimmer*100, rapJitter*100)
 
 # delete s3 files and transcribe job

@@ -1,5 +1,8 @@
 # Sookpeech/voice_analysis
 
+**for Notice**  
+[<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">](https://plaid-fireman-f9d.notion.site/Sookpeech-voice_analysis-ddcea176a96e44e180580da27fe1855a)
+
 | python file | content |
 | --- | --- |
 | voice_analysis.py | (main) .wav 파일을 가져온 후 외부 함수 실행 |

@@ -2,13 +2,13 @@ local_shimmer_std = 3.810
 rap_jitter_std = 0.680
 
 def printTone(localShimmer, rapJitter):
-    text_shimmer = "※사용자님의 목소리 크기 변화율은 {:.3f}%으로 크기 변화가 {} 편입니다.\n적당한 크기 강조 변화율은 {}%입니다."
+    text_shimmer = "※사용자님의 목소리 크기 변화율은 {:.3f}%으로 크기 변화가 {} 편입니다.\n변화율이 {}%보다 낮은 경우 단조롭게 들릴 수 있습니다."
     if localShimmer<local_shimmer_std:
         print(text_shimmer.format(localShimmer, "적은", local_shimmer_std))
     else:
         print(text_shimmer.format(localShimmer, "적당한", local_shimmer_std))
     
-    text_jitter = "※사용자님의 목소리 높낮이 변화율은 {:.3f}%으로 높낮이 변화가 {} 편입니다.\n적당한 높낮이 변화율은 {}%입니다.\n"
+    text_jitter = "※사용자님의 목소리 높낮이 변화율은 {:.3f}%으로 높낮이 변화가 {} 편입니다.\n변화율이 {}%보다 낮은 경우 단조롭게 들릴 수 있습니다.\n"
     if rapJitter<rap_jitter_std:
         print(text_jitter.format(rapJitter, "적은", rap_jitter_std))
     else:

@@ -4,8 +4,11 @@ from ast import literal_eval
 import boto3
 from botocore.config import Config
 import wave
+import asyncio
 
+transcripts = []
 bucket_name = "sookpeech-wavfile"
+
 # Config for transcribe
 my_config = Config(
     region_name = 'ap-northeast-2',
@@ -33,7 +36,20 @@ def uploadTos3(wav_file_title, wav_file_path, count):
 
     return save_cnt
 
-def transcribeWavFile(wav_file_title, count):
+async def return_transcripts_async(saved_file_count, wav_file_title):
+    global transcripts
+    await asyncio.wait([transcribe_async(saved_file_count, wav_file_title)])
+
+    return transcripts
+    
+def transcribe_async(saved_file_count, wav_file_title):
+    for i in range(saved_file_count):
+        transcribeWavFile(wav_file_title, i)
+
+
+async def transcribeWavFile(wav_file_title, count):
+    global transcripts
+
     # run transcribe
     transcribe = boto3.client('transcribe', config=my_config)
     job_uri = 'https://s3.ap-northeast-2.amazonaws.com/{}/{}/{}_{}.wav'.format(bucket_name,wav_file_title, wav_file_title, count)
@@ -48,6 +64,7 @@ def transcribeWavFile(wav_file_title, count):
         }
     )
 
+    print(f">>> transcirbe job <{job_name}> start!")
     # check transcription compeleted or failed
     while True:
         status = transcribe.get_transcription_job(TranscriptionJobName = job_name)
@@ -62,9 +79,10 @@ def transcribeWavFile(wav_file_title, count):
     result = load.read().decode('utf-8')
     result_text = literal_eval(result)['results']['transcripts'][0]['transcript']
 
-    # print('transcribe count_{}: {}'.format(count, result_text))
+    print(f">>> transcirbe job <{job_name}> end!")
 
-    return result_text
+    transcripts.append(result_text)
+    # return result_text
 
 
 def deleteTranscribeJob(wav_file_title, count):

@@ -4,7 +4,6 @@ from ast import literal_eval
 import boto3
 from botocore.config import Config
 import wave
-import asyncio
 
 transcripts = []
 bucket_name = "sookpeech-wavfile"
@@ -37,15 +36,15 @@ def uploadTos3(wav_file_title, wav_file_path, count):
     return save_cnt
 
 # create transcribe jobs for splited wav files and get transcribe results
-async def return_transcripts_async(saved_file_count, wav_file_title):
+def return_transcripts_async(saved_file_count, wav_file_title):
     global transcripts
 
     transcribe = boto3.client('transcribe', config=my_config)
     for i in range(saved_file_count):
         transcribeWavFile(wav_file_title, i, transcribe)
 
-    coros = [getTranscribeResult(wav_file_title, i, transcribe) for i in range(saved_file_count)]
-    await asyncio.wait(coros)
+    for i in range(saved_file_count):
+        getTranscribeResult(wav_file_title, i, transcribe)
 
     return transcripts
 
@@ -69,7 +68,7 @@ def transcribeWavFile(wav_file_title, count, transcribe):
     print(f">>> transcirbe job <{job_name}> started!")
 
 # get transcribe results
-async def getTranscribeResult(wav_file_title, count, transcribe):
+def getTranscribeResult(wav_file_title, count, transcribe):
     global transcripts
     job_name = '{}_{}'.format(wav_file_title, count)
     print(f">>> transcirbe job <{job_name}> try to get!")

@@ -22,7 +22,7 @@ def getDurationSec(path):
 start_time = time.time()
 
 # measure pitch from wav file
-wav_file_title = "news1"
+wav_file_title = "news2m"
 wav_file_path = ".\\audio_files\\" # wav file path
 wav_file_duration = getDurationSec(wav_file_path+wav_file_title+".wav")
 
@@ -34,18 +34,9 @@ chunk_count = pd.splitByPause(wav_file_path, wav_file_title) + 1
 # upload all splited wav files to s3
 saved_file_count = ts.uploadTos3(wav_file_title, wav_file_path, chunk_count)
 
-# transcribe all splited wav files
-# transcripts = []
-# for i in range(saved_file_count):
-#     transcript = ts.transcribeWavFile(wav_file_title, i)
-#     transcripts.append(transcript)
 
-
-async def get_transcripts(saved_file_count, wav_file_title):
-    transcripts = await ts.return_transcripts_async(saved_file_count, wav_file_title)
-    for x in transcripts:
-        print(x)
-    print("==================================================")
+def analysis_transcripts(saved_file_count, wav_file_title):
+    transcripts = asyncio.run(ts.return_transcripts_async(saved_file_count, wav_file_title))
 
     # check speech speed & closing remarks
     words_count = 0 # count num of characters
@@ -71,7 +62,7 @@ async def get_transcripts(saved_file_count, wav_file_title):
     print()
     print(f">>> 동기 처리 소요시간: {end_time-start_time}")
 
-asyncio.run(get_transcripts(saved_file_count, wav_file_title))
+analysis_transcripts(saved_file_count, wav_file_title)
 
 
 

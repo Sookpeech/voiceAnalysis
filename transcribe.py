@@ -36,24 +36,27 @@ def uploadTos3(wav_file_title, wav_file_path, count):
 
     return save_cnt
 
+# create transcribe jobs for splited wav files and get transcribe results
 async def return_transcripts_async(saved_file_count, wav_file_title):
     global transcripts
-    await asyncio.wait([transcribe_async(saved_file_count, wav_file_title)])
+
+    transcribe = boto3.client('transcribe', config=my_config)
+    for i in range(saved_file_count):
+        transcribeWavFile(wav_file_title, i, transcribe)
+
+    coros = [getTranscribeResult(wav_file_title, i, transcribe) for i in range(saved_file_count)]
+    await asyncio.wait(coros)
 
     return transcripts
-    
-def transcribe_async(saved_file_count, wav_file_title):
-    for i in range(saved_file_count):
-        transcribeWavFile(wav_file_title, i)
 
-
-async def transcribeWavFile(wav_file_title, count):
-    global transcripts
+# create transcribe jobs for splited wav files
+def transcribeWavFile(wav_file_title, count, transcribe):
 
     # run transcribe
-    transcribe = boto3.client('transcribe', config=my_config)
     job_uri = 'https://s3.ap-northeast-2.amazonaws.com/{}/{}/{}_{}.wav'.format(bucket_name,wav_file_title, wav_file_title, count)
     job_name = '{}_{}'.format(wav_file_title, count)
+
+    print(f">>> transcirbe job <{job_name}> start!")
     transcribe.start_transcription_job(
         TranscriptionJobName = job_name,
         Media={'MediaFileUri': job_uri},
@@ -63,8 +66,14 @@ async def transcribeWavFile(wav_file_title, count):
             'ShowSpeakerLabels': False
         }
     )
+    print(f">>> transcirbe job <{job_name}> started!")
 
-    print(f">>> transcirbe job <{job_name}> start!")
+# get transcribe results
+async def getTranscribeResult(wav_file_title, count, transcribe):
+    global transcripts
+    job_name = '{}_{}'.format(wav_file_title, count)
+    print(f">>> transcirbe job <{job_name}> try to get!")
+
     # check transcription compeleted or failed
     while True:
         status = transcribe.get_transcription_job(TranscriptionJobName = job_name)
@@ -79,10 +88,8 @@ async def transcribeWavFile(wav_file_title, count):
     result = load.read().decode('utf-8')
     result_text = literal_eval(result)['results']['transcripts'][0]['transcript']
 
-    print(f">>> transcirbe job <{job_name}> end!")
-
+    print(f">>> transcirbe job <{job_name}> end to get!")
     transcripts.append(result_text)
-    # return result_text
 
 
 def deleteTranscribeJob(wav_file_title, count):

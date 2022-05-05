@@ -21,7 +21,7 @@ def getDurationSec(path):
 start_time = time.time()
 
 # measure pitch from wav file
-wav_file_title = "news2m"
+wav_file_title = "news1"
 wav_file_path = ".\\audio_files\\" # wav file path
 wav_file_duration = getDurationSec(wav_file_path+wav_file_title+".wav")
 

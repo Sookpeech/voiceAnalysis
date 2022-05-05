@@ -55,7 +55,6 @@ def transcribeWavFile(wav_file_title, count, transcribe):
     job_uri = 'https://s3.ap-northeast-2.amazonaws.com/{}/{}/{}_{}.wav'.format(bucket_name,wav_file_title, wav_file_title, count)
     job_name = '{}_{}'.format(wav_file_title, count)
 
-    print(f">>> transcirbe job <{job_name}> start!")
     transcribe.start_transcription_job(
         TranscriptionJobName = job_name,
         Media={'MediaFileUri': job_uri},
@@ -65,13 +64,11 @@ def transcribeWavFile(wav_file_title, count, transcribe):
             'ShowSpeakerLabels': False
         }
     )
-    print(f">>> transcirbe job <{job_name}> started!")
 
 # get transcribe results
 def getTranscribeResult(wav_file_title, count, transcribe):
     global transcripts
     job_name = '{}_{}'.format(wav_file_title, count)
-    print(f">>> transcirbe job <{job_name}> try to get!")
 
     # check transcription compeleted or failed
     while True:
@@ -87,7 +84,6 @@ def getTranscribeResult(wav_file_title, count, transcribe):
     result = load.read().decode('utf-8')
     result_text = literal_eval(result)['results']['transcripts'][0]['transcript']
 
-    print(f">>> transcirbe job <{job_name}> end to get!")
     transcripts.append(result_text)
 
 

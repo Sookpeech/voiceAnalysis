@@ -1,6 +1,7 @@
 ## folder
 __pycache__/
 audio_files/
+py-hanspell/
 
 ## file
 imports.py

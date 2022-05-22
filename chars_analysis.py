@@ -8,16 +8,10 @@ def adjustSpacing(transcripts):
     new_transcripts = []
 
     for i in range(len(transcripts)):
-        print(">>>> sentence ["+str(i+1)+"]")
-        print(">>>> old_sentence: ["+transcripts[i]+"]")
         new_sent = transcripts[i].replace(" ", '')
-        print(">>>> sub_sentence: ["+new_sent+"]")
         new_transcripts.append(new_sent)
 
     result = spell_checker.check(transcripts)
-
-    for i in range(len(transcripts)):
-        print(">>>> new_sentence: ["+result[i].checked+"]")
 
     return result
 

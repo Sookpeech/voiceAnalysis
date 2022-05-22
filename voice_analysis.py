@@ -25,7 +25,13 @@ wav_file_title = "practice"
 wav_file_path = ".\\audio_files\\" # wav file path
 wav_file_duration = getDurationSec(wav_file_path+wav_file_title+".wav")
 
-localShimmer, rapJitter = tone.measurePitch(155, 334, "Hertz", wav_file_title, wav_file_path)
+gender = "W"
+
+if gender == "W":
+    shimmer, jitter = tone.measurePitch(155, 334, "Hertz", wav_file_title, wav_file_path)
+else:
+    shimmer, jitter = tone.measurePitch(85, 196, "Hertz", wav_file_title, wav_file_path)
+
 
 # split wav file using pause_detection
 chunk_count = pd.splitByPause(wav_file_path, wav_file_title) + 1
@@ -45,9 +51,6 @@ closing_remark_count = 0 # count num of sentences with appropriate closing remar
 for i in range(len(result)):
     words_count += ca.countNumOfWords(result[i].checked)
     closing_remark_count += ca.checkClosingRemarks(result[i].checked)
-# for transcript in transcripts:
-#     words_count += ca.countNumOfWords(transcript)
-#     closing_remark_count += ca.checkClosingRemarks(transcript)
 
 # end time check
 end_time = time.time()
@@ -60,7 +63,7 @@ pr.printWPM(words_count, wav_file_duration)
 print("[2] 맺음말")
 pr.printClosingRemarks(closing_remark_count, chunk_count)
 print("[3] 목소리 강조")
-pr.printTone(localShimmer*100, rapJitter*100)
+pr.printTone(shimmer*100, jitter*100, gender)
 
 # delete s3 files and transcribe job
 print(">>> deleting transcribe jobs and s3 objects")

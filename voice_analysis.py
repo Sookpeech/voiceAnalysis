@@ -21,7 +21,7 @@ def getDurationSec(path):
 start_time = time.time()
 
 # measure pitch from wav file
-wav_file_title = "news1"
+wav_file_title = "practice"
 wav_file_path = ".\\audio_files\\" # wav file path
 wav_file_duration = getDurationSec(wav_file_path+wav_file_title+".wav")
 
@@ -36,12 +36,18 @@ saved_file_count = ts.uploadTos3(wav_file_title, wav_file_path, chunk_count)
 # start transcribe 
 transcripts = ts.return_transcripts_async(saved_file_count, wav_file_title)
 
+# preprocessing transcripts
+result = ca.adjustSpacing(transcripts)
+
 # check speech speed & closing remarks
 words_count = 0 # count num of characters
 closing_remark_count = 0 # count num of sentences with appropriate closing remarks
-for transcript in transcripts:
-    words_count += ca.countNumOfWords(transcript)
-    closing_remark_count += ca.checkClosingRemarks(transcript)
+for i in range(len(result)):
+    words_count += ca.countNumOfWords(result[i].checked)
+    closing_remark_count += ca.checkClosingRemarks(result[i].checked)
+# for transcript in transcripts:
+#     words_count += ca.countNumOfWords(transcript)
+#     closing_remark_count += ca.checkClosingRemarks(transcript)
 
 # end time check
 end_time = time.time()

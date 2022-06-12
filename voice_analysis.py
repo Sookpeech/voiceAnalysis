@@ -21,7 +21,7 @@ def getDurationSec(path):
 start_time = time.time()
 
 # measure pitch from wav file
-wav_file_title = "practice"
+wav_file_title = "news1"
 wav_file_path = ".\\audio_files\\" # wav file path
 wav_file_duration = getDurationSec(wav_file_path+wav_file_title+".wav")
 
@@ -48,12 +48,16 @@ result = ca.adjustSpacing(transcripts)
 # check speech speed & closing remarks
 words_count = 0 # count num of characters
 closing_remark_count = 0 # count num of sentences with appropriate closing remarks
+print("\n")
+print(">>>> 말하기 속도와 맺음말을 분석합니다.")
 for i in range(len(result)):
     words_count += ca.countNumOfWords(result[i].checked)
     closing_remark_count += ca.checkClosingRemarks(result[i].checked)
 
 # end time check
 end_time = time.time()
+print()
+print()
 print()
 print(f">>> 소요시간: {end_time-start_time}")
 

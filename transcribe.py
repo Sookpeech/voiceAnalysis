@@ -40,6 +40,8 @@ def return_transcripts_async(saved_file_count, wav_file_title):
     global transcripts
 
     transcribe = boto3.client('transcribe', config=my_config)
+    print("\n")
+    print(">>>> 음성 파일을 텍스트로 변환합니다.")
     for i in range(saved_file_count):
         transcribeWavFile(wav_file_title, i, transcribe)
 
@@ -50,7 +52,6 @@ def return_transcripts_async(saved_file_count, wav_file_title):
 
 # create transcribe jobs for splited wav files
 def transcribeWavFile(wav_file_title, count, transcribe):
-
     # run transcribe
     job_uri = 'https://s3.ap-northeast-2.amazonaws.com/{}/{}/{}_{}.wav'.format(bucket_name,wav_file_title, wav_file_title, count)
     job_name = '{}_{}'.format(wav_file_title, count)

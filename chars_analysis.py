@@ -5,11 +5,12 @@ import urllib3
 import json
 
 def adjustSpacing(transcripts):
-    new_transcripts = []
+    # 띄어쓰기 없애기
+    # new_transcripts = []
 
-    for i in range(len(transcripts)):
-        new_sent = transcripts[i].replace(" ", '')
-        new_transcripts.append(new_sent)
+    # for i in range(len(transcripts)):
+    #     new_sent = transcripts[i].replace(" ", '')
+    #     new_transcripts.append(new_sent)
 
     result = spell_checker.check(transcripts)
 

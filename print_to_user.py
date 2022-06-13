@@ -59,5 +59,5 @@ def printWPM(count, duration):
     print(text.format(WPM))
 
 def printClosingRemarks(count, total_count):
-    text = "※사용자님이 발화하신 {}문장 중 {:.1f}%의 맺음말이 정확히 인식되었습니다.\n"
-    print(text.format(total_count, (count/total_count)*100))
+    text = "※사용자님이 발화하신 문장 중 {:.1f}%의 맺음말이 정확히 인식되었습니다.\n"
+    print(text.format((count/total_count)*100))

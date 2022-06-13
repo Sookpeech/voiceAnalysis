@@ -13,5 +13,4 @@ def splitByPause(wav_file_path, wav_file_title):
         output_audio = wav_file_path+wav_file_title+"_{0}.wav".format(i)
         # print("Export complete: ", output_audio)
         chunk.export(output_audio, format="wav")
-    print(f"   분리된 음성 파일 수 1->{i+1}개")
     return i
